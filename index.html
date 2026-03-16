@@ -35,7 +35,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Orbitron:wght@400;700;900&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Orbitron:wght@400;700;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-cyan: #00d4ff;
@@ -44,6 +44,98 @@
             --neon-green: #00ff64;
             --dark-bg: #0a0a0f;
             --panel-bg: #12121a;
+        }
+        html[dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+
+        html[dir="rtl"] body {
+            direction: rtl;
+        }
+
+        /* Force proper text alignment for all content when in RTL */
+        html[dir="rtl"] h1, 
+        html[dir="rtl"] h2, 
+        html[dir="rtl"] h3, 
+        html[dir="rtl"] p,
+        html[dir="rtl"] span,
+        html[dir="rtl"] div {
+            text-align: right;
+        }
+
+        /* Keep code/terminal LTR (don't flip programming content) */
+        html[dir="rtl"] .terminal,
+        html[dir="rtl"] .terminal-content,
+        html[dir="rtl"] code,
+        html[dir="rtl"] pre,
+        html[dir="rtl"] .font-mono {
+            direction: ltr;
+            text-align: left;
+            unicode-bidi: normal;
+        }
+
+        /* Terminal ALWAYS LTR - force override */
+        .terminal,
+        .terminal-content,
+        .terminal * {
+            direction: ltr !important;
+            text-align: left !important;
+            unicode-bidi: normal !important;
+            font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        /* Code elements always LTR */
+        code, pre, .font-mono {
+            direction: ltr !important;
+            unicode-bidi: normal !important;
+        }
+
+        /* RTL Navigation fixes */
+        html[dir="rtl"] #top-nav-buttons {
+            flex-direction: row-reverse;
+        }
+
+        html[dir="rtl"] button,
+        html[dir="rtl"] .cyber-btn,
+        html[dir="rtl"] .cyber-btn-secondary,
+        html[dir="rtl"] .lang-toggle {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            line-height: 2.5;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Keep progress bars LTR */
+        html[dir="rtl"] .skill-bar,
+        html[dir="rtl"] .skill-progress {
+            direction: ltr !important;
+        }
+
+        /* RTL Grid support */
+        html[dir="rtl"] .grid {
+            direction: rtl;
+        }
+
+        html[dir="rtl"] .project-card,
+        html[dir="rtl"] .skill-card,
+        html[dir="rtl"] .cert-card,
+        html[dir="rtl"] .contact-card,
+        html[dir="rtl"] .blender-card {
+            text-align: right;
+        }
+
+        /* Fix flex direction in RTL for cards */
+        html[dir="rtl"] .project-card .flex.items-center,
+        html[dir="rtl"] .contact-card .flex {
+            flex-direction: row-reverse;
+        }
+
+        /* Keep terminal prompts LTR */
+        html[dir="rtl"] .terminal-content .text-green-400,
+        html[dir="rtl"] .terminal-content .text-cyan-400:first-child {
+            direction: ltr !important;
+            display: inline-block;
         }
         
         * {
@@ -56,6 +148,23 @@
             scroll-behavior: auto;
         }
         
+        /* ============================================
+           URDU NASTALIQ FONT STYLES
+           ============================================ */
+        
+        .font-urdu {
+            font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Al Qalam Quran Majeed', serif;
+            direction: rtl;
+            unicode-bidi: embed;
+            text-align: right;
+            line-height: 2.8;
+            font-size: 1.25em;
+            letter-spacing: 0;
+            word-spacing: 0.05em;
+            font-feature-settings: "liga" 1, "calt" 1;
+            -webkit-font-feature-settings: "liga" 1, "calt" 1;
+        }
+        
         body {
             font-family: 'JetBrains Mono', monospace;
             background: var(--dark-bg);
@@ -66,11 +175,6 @@
         
         .font-cyber {
             font-family: 'Orbitron', sans-serif;
-        }
-        
-        .font-urdu {
-            font-family: 'Noto Nastaliq Urdu', 'JetBrains Mono', serif;
-            line-height: 2;
         }
         
         /* Custom Cursor */
@@ -677,6 +781,7 @@
             transform: translateY(0);
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <!-- Loading Screen -->
@@ -714,7 +819,7 @@
                 
                 <!-- Language Toggle Button -->
                 <button onclick="toggleLanguage()" class="lang-toggle px-4 py-2 rounded text-sm font-bold flex items-center gap-2" id="langBtn">
-                    <span class="text-lg">🇵🇰</span>
+                    <span class="text-lg">🇺🇸</span>
                     <span id="langText">اردو</span>
                 </button>
             </div>
@@ -722,7 +827,7 @@
             <!-- Mobile menu button -->
             <div class="md:hidden flex items-center gap-4">
                 <button onclick="toggleLanguage()" class="lang-toggle px-3 py-2 rounded text-xs font-bold flex items-center gap-1" id="langBtnMobile">
-                    <span>🇵🇰</span>
+                    <span>🇺🇸</span>
                     <span id="langTextMobile">اردو</span>
                 </button>
                 <button class="text-cyan-400 hover:text-pink-400 transition-colors" onclick="toggleMobileMenu()">
@@ -767,9 +872,7 @@
                 <a href="https://github.com/AbbanAli" target="_blank" class="cyber-btn-secondary px-8 py-4 rounded font-mono font-bold inline-flex items-center gap-2 text-center group lang-transition" data-en="GITHUB <span class='group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform'>↗</span>" data-ur="گٹ ہب <span class='group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform'>↗</span>">
                     GITHUB <span class="group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform">↗</span>
                 </a>
-                <button id="gsapLangBtn" onclick="toggleLanguage()" class="cyber-btn-secondary px-8 py-4 rounded font-mono font-bold inline-flex items-center gap-2 lang-transition" type="button">
-                    <span id="gsapLangLabel">EN ↔ UR</span>
-                </button>
+                
             </div>
             
             <!-- Stats Grid -->
@@ -1082,38 +1185,66 @@
             <h2 class="text-3xl md:text-5xl font-bold mb-12 font-cyber section-title">
                 <span class="text-green-400">&gt;</span> <span class="lang-transition" data-en="CERTIFICATIONS" data-ur="سرٹیفیکیشنز">CERTIFICATIONS</span>
             </h2>
-            <div class="flex justify-center">
-                <div class="cyber-card rounded-xl p-6 w-full max-w-4xl opacity-0 translate-y-8">
+            
+            <!-- Certificates Grid -->
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Python Certificate -->
+                <div class="cyber-card rounded-xl p-6 opacity-0 translate-y-8 cert-card">
                     <h3 class="text-xl font-bold text-cyan-400 font-cyber mb-4 lang-transition" data-en="Python (Basic) Certificate" data-ur="پائتھون (بیسک) سرٹیفیکیٹ">Python (Basic) Certificate</h3>
                     <p class="text-gray-400 mb-6 leading-relaxed lang-transition" data-en="Achieved HackerRank Python (Basic) certification demonstrating foundational Python skills in scripting, data structures and program logic." data-ur="سکرپٹنگ، ڈیٹا سٹرکچرز اور پروگرام لاجک میں بنیادی پائتھون مہارتوں کو ظاہر کرنے والے HackerRank پائتھون (بیسک) سرٹیفیکیشن حاصل کیا۔">
                         Achieved HackerRank Python (Basic) certification demonstrating foundational Python skills in scripting, data structures and program logic.
                     </p>
 
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <div class="mb-4">
-                                <img id="cert-image" src="image.png" alt="Python Basic Certificate" class="w-full h-auto rounded border border-gray-700" />
-                                <p id="cert-fallback" class="text-sm text-yellow-300 mt-2 hidden lang-transition" data-en="Certificate image not found. Please place <code>image.png</code> in the same folder or update the path to your screenshot." data-ur="سرٹیفیکیٹ کی تصویر نہیں ملی۔ براہ کرم <code>image.png</code> کو اسی فولڈر میں رکھیں یا اپنے اسکرین شاٹ کا پاتھ اپڈیٹ کریں۔">
-                                    Certificate image not found. Please place <code>image.png</code> in the same folder or update the path to your screenshot.
-                                </p>
-                            </div>
-                            <a id="cert-link" href="image.png" target="_blank" class="cyber-btn px-4 py-3 rounded font-mono font-bold inline-flex items-center gap-2 lang-transition" data-en="VIEW CERTIFICATE" data-ur="سرٹیفیکیٹ دیکھیں">VIEW CERTIFICATE</a>
-                        </div>
-                        <div class="text-left md:text-left">
-                            <h4 class="text-lg font-semibold text-pink-400 font-cyber mb-4 lang-transition" data-en="Qualification Details" data-ur="قابلیت کی تفصیلات">Qualification Details</h4>
-                            <ul class="list-disc list-inside text-gray-300 space-y-2 lang-transition" data-en="<li>Issued by: HackerRank</li><li>Date: 10 Mar, 2026</li><li>Score: 100%</li><li>Topics: Python syntax, control flow, functions, collections</li><li>Validity: Lifetime</li>" data-ur="<li>جاری کنندہ: HackerRank</li><li>تاریخ: 10 مارچ، 2026</li><li>اسکور: 100%</li><li>موضوعات: پائتھون سنٹیکس، کنٹرول فلو، فنکشنز، کولیکشنز</li><li>میعاد: زندگی بھر</li>">
-                                <li>Issued by: HackerRank</li>
-                                <li>Date: 10 Mar, 2026</li>
-                                <li>Score: 100%</li>
-                                <li>Topics: Python syntax, control flow, functions, collections</li>
-                                <li>Validity: Lifetime</li>
-                            </ul>
-                            <div class="mt-4 text-sm text-gray-400 lang-transition" data-en="More certificates coming soon: JavaScript, APIs, Automation." data-ur="مزید سرٹیفیکیشنز جلد آرہے ہیں: جاوا اسکرپٹ، APIs، آٹومیشن۔">
-                                More certificates coming soon: JavaScript, APIs, Automation.
-                            </div>
-                        </div>
+                    <div class="mb-4">
+                        <img id="cert-image-python" src="image.png" alt="Python Basic Certificate" class="w-full h-auto rounded border border-gray-700" />
+                        <p id="cert-fallback-python" class="text-sm text-yellow-300 mt-2 hidden lang-transition" data-en="Certificate image not found. Please place <code>image.png</code> in the same folder." data-ur="سرٹیفیکیٹ کی تصویر نہیں ملی۔ براہ کرم <code>image.png</code> کو اسی فولڈر میں رکھیں۔">
+                            Certificate image not found. Please place <code>image.png</code> in the same folder.
+                        </p>
+                    </div>
+                    
+                    <a id="cert-link-python" href="image.png" target="_blank" class="cyber-btn px-4 py-3 rounded font-mono font-bold inline-flex items-center gap-2 lang-transition" data-en="VIEW CERTIFICATE" data-ur="سرٹیفیکیٹ دیکھیں">VIEW CERTIFICATE</a>
+                    
+                    <div class="mt-4 text-left text-sm">
+                        <ul class="list-disc list-inside text-gray-300 space-y-1 lang-transition" data-en="<li>Issued by: HackerRank</li><li>Date: 10 Mar, 2026</li><li>Score: 100%</li><li>Validity: Lifetime</li>" data-ur="<li>جاری کنندہ: HackerRank</li><li>تاریخ: 10 مارچ، 2026</li><li>اسکور: 100%</li><li>میعاد: زندگی بھر</li>">
+                            <li>Issued by: HackerRank</li>
+                            <li>Date: 10 Mar, 2026</li>
+                            <li>Score: 100%</li>
+                            <li>Validity: Lifetime</li>
+                        </ul>
                     </div>
                 </div>
+
+                <!-- JavaScript Certificate -->
+                <div class="cyber-card rounded-xl p-6 opacity-0 translate-y-8 cert-card">
+                    <h3 class="text-xl font-bold text-yellow-400 font-cyber mb-4 lang-transition" data-en="JavaScript (Basic) Certificate" data-ur="جاوا اسکرپٹ (بیسک) سرٹیفیکیٹ">JavaScript (Basic) Certificate</h3>
+                    <p class="text-gray-400 mb-6 leading-relaxed lang-transition" data-en="Achieved HackerRank JavaScript (Basic) certification demonstrating core JS skills in DOM manipulation, ES6+ features, and asynchronous programming." data-ur="HackerRank جاوا اسکرپٹ (بیسک) سرٹیفیکیشن حاصل کیا جس میں DOM مینوپلیشن، ES6+ فیچرز، اور asynchronous پروگرامنگ میں مہارت ظاہر ہوتی ہے۔">
+                        Achieved HackerRank JavaScript (Basic) certification demonstrating core JS skills in DOM manipulation, ES6+ features, and asynchronous programming.
+                    </p>
+
+                    <div class="mb-4">
+                        <img id="cert-image-js" src="jscirt.png" alt="JavaScript Basic Certificate" class="w-full h-auto rounded border border-gray-700" />
+                        <p id="cert-fallback-js" class="text-sm text-yellow-300 mt-2 hidden lang-transition" data-en="Certificate image not found. Please place <code>jscirt.png</code> in the same folder." data-ur="سرٹیفیکیٹ کی تصویر نہیں ملی۔ براہ کرم <code>jscirt.png</code> کو اسی فولڈر میں رکھیں۔">
+                            Certificate image not found. Please place <code>jscirt.png</code> in the same folder.
+                        </p>
+                    </div>
+                    
+                    <a id="cert-link-js" href="jscirt.png" target="_blank" class="cyber-btn px-4 py-3 rounded font-mono font-bold inline-flex items-center gap-2 lang-transition" data-en="VIEW CERTIFICATE" data-ur="سرٹیفیکیٹ دیکھیں">VIEW CERTIFICATE</a>
+                    
+                    <div class="mt-4 text-left text-sm">
+                        <ul class="list-disc list-inside text-gray-300 space-y-1 lang-transition" data-en="<li>Issued by: HackerRank</li><li>Date: 11 Mar, 2026</li><li>Score: 100%</li><li>Validity: Lifetime</li>" data-ur="<li>جاری کنندہ: HackerRank</li><li>تاریخ: 11 مارچ، 2026</li><li>اسکور: 100%</li><li>میعاد: زندگی بھر</li>">
+                            <li>Issued by: HackerRank</li>
+                            <li>Date: 11 Mar, 2026</li>
+                            <li>Score: 100%</li>
+                            <li>Validity: Lifetime</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-8 text-sm text-gray-400 lang-transition" data-en="More certificates coming soon: APIs, Automation, Advanced Python." data-ur="مزید سرٹیفیکیشنز جلد آرہے ہیں: APIs، آٹومیشن، ایڈوانسڈ پائتھون۔">
+                More certificates coming soon: APIs, Automation, Advanced Python.
             </div>
         </div>
     </section>
@@ -1290,12 +1421,13 @@
                 certificates: {
                     title: "CERTIFICATIONS",
                     python: "Python (Basic) Certificate",
-                    desc: "Achieved HackerRank Python (Basic) certification demonstrating foundational Python skills in scripting, data structures and program logic.",
+                    js: "JavaScript (Basic) Certificate",
+                    pythonDesc: "Achieved HackerRank Python (Basic) certification demonstrating foundational Python skills in scripting, data structures and program logic.",
+                    jsDesc: "Achieved HackerRank JavaScript (Basic) certification demonstrating core JS skills in DOM manipulation, ES6+ features, and asynchronous programming.",
                     view: "VIEW CERTIFICATE",
-                    details: "Qualification Details",
-                    list: "<li>Issued by: HackerRank</li><li>Date: 10 Mar, 2026</li><li>Score: 100%</li><li>Topics: Python syntax, control flow, functions, collections</li><li>Validity: Lifetime</li>",
-                    more: "More certificates coming soon: JavaScript, APIs, Automation.",
-                    fallback: "Certificate image not found. Please place <code>image.png</code> in the same folder or update the path to your screenshot."
+                    pythonDate: "<li>Issued by: HackerRank</li><li>Date: 10 Mar, 2026</li><li>Score: 100%</li><li>Validity: Lifetime</li>",
+                    jsDate: "<li>Issued by: HackerRank</li><li>Date: 11 Mar, 2026</li><li>Score: 100%</li><li>Validity: Lifetime</li>",
+                    more: "More certificates coming soon: APIs, Automation, Advanced Python."
                 },
                 blender: {
                     title: "BLENDER_STUDIO",
@@ -1372,12 +1504,13 @@
                 certificates: {
                     title: "سرٹیفیکیشنز",
                     python: "پائتھون (بیسک) سرٹیفیکیٹ",
-                    desc: "سکرپٹنگ، ڈیٹا سٹرکچرز اور پروگرام لاجک میں بنیادی پائتھون مہارتوں کو ظاہر کرنے والے HackerRank پائتھون (بیسک) سرٹیفیکیشن حاصل کیا۔",
+                    js: "جاوا اسکرپٹ (بیسک) سرٹیفیکیٹ",
+                    pythonDesc: "سکرپٹنگ، ڈیٹا سٹرکچرز اور پروگرام لاجک میں بنیادی پائتھون مہارتوں کو ظاہر کرنے والے HackerRank پائتھون (بیسک) سرٹیفیکیشن حاصل کیا۔",
+                    jsDesc: "HackerRank جاوا اسکرپٹ (بیسک) سرٹیفیکیشن حاصل کیا جس میں DOM مینوپلیشن، ES6+ فیچرز، اور asynchronous پروگرامنگ میں مہارت ظاہر ہوتی ہے۔",
                     view: "سرٹیفیکیٹ دیکھیں",
-                    details: "قابلیت کی تفصیلات",
-                    list: "<li>جاری کنندہ: HackerRank</li><li>تاریخ: 10 مارچ، 2026</li><li>اسکور: 100%</li><li>موضوعات: پائتھون سنٹیکس، کنٹرول فلو، فنکشنز، کولیکشنز</li><li>میعاد: زندگی بھر</li>",
-                    more: "مزید سرٹیفیکیشنز جلد آرہے ہیں: جاوا اسکرپٹ، APIs، آٹومیشن۔",
-                    fallback: "سرٹیفیکیٹ کی تصویر نہیں ملی۔ براہ کرم <code>image.png</code> کو اسی فولڈر میں رکھیں یا اپنے اسکرین شاٹ کا پاتھ اپڈیٹ کریں۔"
+                    pythonDate: "<li>جاری کنندہ: HackerRank</li><li>تاریخ: 10 مارچ، 2026</li><li>اسکور: 100%</li><li>میعاد: زندگی بھر</li>",
+                    jsDate: "<li>جاری کنندہ: HackerRank</li><li>تاریخ: 11 مارچ، 2026</li><li>اسکور: 100%</li><li>میعاد: زندگی بھر</li>",
+                    more: "مزید سرٹیفیکیشنز جلد آرہے ہیں: APIs، آٹومیشن، ایڈوانسڈ پائتھون۔"
                 },
                 blender: {
                     title: "بلینڈر_اسٹوڈیو",
@@ -1472,20 +1605,10 @@
         function toggleLanguage() {
             const newLang = currentLang === 'en' ? 'ur' : 'en';
             const t = translations[newLang];
-            const gsapBtn = document.getElementById('gsapLangBtn');
-            const gsapLabel = document.getElementById('gsapLangLabel');
+            const html = document.documentElement;
+            const body = document.body;
 
-            // Smooth GSAP transform for button and page visual cue
-            if (gsapBtn) {
-                gsap.to(gsapBtn, {
-                    scale: 1.15,
-                    duration: 0.18,
-                    ease: 'power2.out',
-                    yoyo: true,
-                    repeat: 1
-                });
-            }
-
+            // Visual feedback
             gsap.to('body', {
                 backgroundColor: '#13131b',
                 duration: 0.3,
@@ -1508,10 +1631,7 @@
             if (langTextMobile) {
                 langTextMobile.textContent = newLang === 'en' ? 'اردو' : 'EN';
             }
-            if (gsapLabel) {
-                gsapLabel.textContent = 'EN ↔ UR';
-            }
-
+            
             // Toggle active class
             if (btn) btn.classList.toggle('active', newLang === 'ur');
             if (btnMobile) btnMobile.classList.toggle('active', newLang === 'ur');
@@ -1529,18 +1649,16 @@
                 })
                 .add(() => {
                     updateAllContent(newLang, t);
-                    document.documentElement.lang = newLang;
-                    document.body.style.direction = newLang === 'ur' ? 'rtl' : 'ltr';
-                    document.querySelectorAll('.lang-transition').forEach(el => {
-                        el.style.direction = newLang === 'ur' ? 'rtl' : 'ltr';
-                    });
-
+                    
+                    // Simplified RTL handling - just set dir on html and class on body
                     if (newLang === 'ur') {
-                        document.body.classList.add('font-urdu');
-                        document.documentElement.dir = 'rtl';
+                        html.setAttribute('dir', 'rtl');
+                        html.setAttribute('lang', 'ur');
+                        body.classList.add('font-urdu');
                     } else {
-                        document.body.classList.remove('font-urdu');
-                        document.documentElement.dir = 'ltr';
+                        html.setAttribute('dir', 'ltr');
+                        html.setAttribute('lang', 'en');
+                        body.classList.remove('font-urdu');
                     }
                 })
                 .to(transitionEls, {
@@ -1636,26 +1754,27 @@
             const certTitle = document.querySelector('#certificates .section-title span:last-child');
             if (certTitle) certTitle.textContent = t.certificates.title;
             
-            const certCard = document.querySelector('#certificates .cyber-card');
-            if (certCard) {
-                certCard.querySelector('h3').textContent = t.certificates.python;
-                certCard.querySelector('p.text-gray-400').textContent = t.certificates.desc;
-                
-                const certLink = document.getElementById('cert-link');
+            // Update certificate cards
+            const certCards = document.querySelectorAll('#certificates .cert-card');
+            if (certCards[0]) {
+                certCards[0].querySelector('h3').textContent = t.certificates.python;
+                certCards[0].querySelector('p.text-gray-400').textContent = t.certificates.pythonDesc;
+                const certLink = document.getElementById('cert-link-python');
                 if (certLink) certLink.textContent = t.certificates.view;
-                
-                const detailsTitle = certCard.querySelector('h4');
-                if (detailsTitle) detailsTitle.textContent = t.certificates.details;
-                
-                const detailsList = certCard.querySelector('ul');
-                if (detailsList) detailsList.innerHTML = t.certificates.list;
-                
-                const moreText = certCard.querySelector('.mt-4.text-sm');
-                if (moreText) moreText.textContent = t.certificates.more;
-                
-                const fallback = document.getElementById('cert-fallback');
-                if (fallback) fallback.textContent = t.certificates.fallback;
+                const detailsList = certCards[0].querySelector('ul');
+                if (detailsList) detailsList.innerHTML = t.certificates.pythonDate;
             }
+            if (certCards[1]) {
+                certCards[1].querySelector('h3').textContent = t.certificates.js;
+                certCards[1].querySelector('p.text-gray-400').textContent = t.certificates.jsDesc;
+                const certLink = document.getElementById('cert-link-js');
+                if (certLink) certLink.textContent = t.certificates.view;
+                const detailsList = certCards[1].querySelector('ul');
+                if (detailsList) detailsList.innerHTML = t.certificates.jsDate;
+            }
+            
+            const moreText = document.querySelector('#certificates .mt-8.text-sm');
+            if (moreText) moreText.textContent = t.certificates.more;
             
             // Blender Section
             const blenderTitle = document.querySelector('#blender .section-title span:last-child');
@@ -2020,7 +2139,7 @@
             });
 
             // Certificate section animation
-            gsap.utils.toArray('#certificates .cyber-card').forEach((card, i) => {
+            gsap.utils.toArray('#certificates .cert-card').forEach((card, i) => {
                 gsap.to(card, {
                     opacity: 1,
                     y: 0,
@@ -2131,16 +2250,30 @@
             }, 1500);
         }
 
-        // Certificate image fallback
-        const certImage = document.getElementById('cert-image');
-        const certFallback = document.getElementById('cert-fallback');
-        const certLink = document.getElementById('cert-link');
+        // Certificate image fallback handlers
+        const certImagePython = document.getElementById('cert-image-python');
+        const certFallbackPython = document.getElementById('cert-fallback-python');
+        const certLinkPython = document.getElementById('cert-link-python');
 
-        certImage.addEventListener('error', () => {
-            certFallback.classList.remove('hidden');
-            certLink.classList.add('pointer-events-none', 'opacity-50');
-            certLink.textContent = currentLang === 'en' ? 'NO CERTIFICATE IMAGE AVAILABLE' : 'کوئی سرٹیفیکیٹ تصویر دستیاب نہیں';
-        });
+        if (certImagePython) {
+            certImagePython.addEventListener('error', () => {
+                certFallbackPython.classList.remove('hidden');
+                certLinkPython.classList.add('pointer-events-none', 'opacity-50');
+                certLinkPython.textContent = currentLang === 'en' ? 'NO CERTIFICATE IMAGE AVAILABLE' : 'کوئی سرٹیفیکیٹ تصویر دستیاب نہیں';
+            });
+        }
+
+        const certImageJs = document.getElementById('cert-image-js');
+        const certFallbackJs = document.getElementById('cert-fallback-js');
+        const certLinkJs = document.getElementById('cert-link-js');
+
+        if (certImageJs) {
+            certImageJs.addEventListener('error', () => {
+                certFallbackJs.classList.remove('hidden');
+                certLinkJs.classList.add('pointer-events-none', 'opacity-50');
+                certLinkJs.textContent = currentLang === 'en' ? 'NO CERTIFICATE IMAGE AVAILABLE' : 'کوئی سرٹیفیکیٹ تصویر دستیاب نہیں';
+            });
+        }
 
         // Navbar background + auto-hide on scroll down, show on scroll up
         const navbar = document.getElementById('navbar');
@@ -2158,7 +2291,7 @@
                 navbar.style.boxShadow = 'none';
             }
 
-            // Hide while scrolling down, show while scrolling up
+
             if (currentScroll > lastScroll && currentScroll > 120) {
                 navbar.style.transform = 'translateY(-100%)';
             } else {
@@ -2169,4 +2302,4 @@
         });
     </script>
 </body>
-</html>
+</html>                
