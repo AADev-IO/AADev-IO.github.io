@@ -1,570 +1,708 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abban Ali | Developer</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+  <title>Abban Ali — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg:       #F7F6F2;
+      --bg-nav:   rgba(247,246,242,0.88);
+      --fg:       #0D0D0D;
+      --fg-muted: #888;
+      --fg-dim:   #bbb;
+      --border:   #E0DED8;
+      --accent:   #C8832A;
+      --accent-light: rgba(200,131,42,0.12);
+      --nav-h:    56px;
+      --max-w:    720px;
+    }
+    [data-theme="dark"] {
+      --bg:       #0D0D0B;
+      --bg-nav:   rgba(13,13,11,0.88);
+      --fg:       #F0EFE9;
+      --fg-muted: #666;
+      --fg-dim:   #333;
+      --border:   #1E1E1A;
+      --accent:   #E8A838;
+      --accent-light: rgba(232,168,56,0.1);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.4s, color 0.4s;
       overflow-x: hidden;
     }
 
-    .glass {
-      background: rgba(17, 24, 39, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.06);
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    /* ── typewritter ─── */
+    .author {
+    font-size: 0.45em;
+    color: #888;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
     }
 
-    .card {
-      transition: 0.3s ease;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* ── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 60px);
+      background: var(--bg-nav);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .nav-logo span {
+      color: var(--accent);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--fg-muted);
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--fg); }
+    #theme-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 32px; height: 32px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--fg-muted);
+      transition: all 0.2s;
+    }
+    #theme-btn:hover { color: var(--fg); border-color: var(--fg-muted); }
+    #theme-btn svg { width: 14px; height: 14px; }
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    /* ── Layout ─── */
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 40px);
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(96,165,250,0.4);
-      box-shadow: 0 10px 40px rgba(59,130,246,0.15);
+    /* ── Hero ─── */
+    #hero {
+      padding-top: calc(var(--nav-h) + 100px);
+      padding-bottom: 100px;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+    }
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
     }
 
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(40px, 8vw, 68px);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--accent);
+    }
+    /* The terminal typing cursor */
+    .hero-title .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--fg-muted);
+      max-width: 460px;
+      line-height: 1.75;
+      margin-bottom: 48px;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.35s forwards;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
+    }
     .btn-primary {
-      background: #2563eb;
-      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--fg);
+      color: var(--bg);
+      border-radius: 6px;
+      padding: 11px 22px;
+      transition: all 0.25s;
+      letter-spacing: 0.01em;
     }
-
     .btn-primary:hover {
-      background: #3b82f6;
       transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+    .btn-primary svg { width: 11px; height: 11px; transition: transform 0.25s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--fg-muted);
+      padding: 11px 22px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover { color: var(--fg); border-color: var(--fg-muted); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
     }
 
-    .btn-secondary {
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: 0.25s ease;
+    /* ── Section divider ─── */
+    .section-rule {
+      height: 1px;
+      background: var(--border);
+      transition: background 0.4s;
     }
 
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.06);
-      transform: translateY(-2px);
-    }
-
-    .gradient-text {
-      background: linear-gradient(to right, #60a5fa, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .skill-bar {
-      width: 100%;
-      height: 8px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .skill-progress {
-      height: 100%;
-      background: linear-gradient(to right, #3b82f6, #8b5cf6);
-      border-radius: 999px;
-    }
-
+    /* ── Section base ─── */
     section {
-      padding: 120px 24px;
+      padding: 80px 0;
+    }
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 36px;
+    }
+
+    /* ── About ─── */
+    .about-text {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 300;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+      margin-bottom: 48px;
+    }
+    .about-text strong {
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* Inline tech pills */
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .stack-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 14px;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .stack-pill:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* ── Projects — table-style ─── */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .project-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .project-row:first-child { border-top: 1px solid var(--border); }
+    .project-row::before {
+      content: '';
+      position: absolute;
+      left: -20px; right: -20px; top: 0; bottom: 0;
+      border-radius: 8px;
+      background: var(--accent-light);
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .project-row:hover::before { opacity: 1; }
+
+    .proj-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--fg-dim);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+    .proj-name {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .proj-desc {
+      font-size: 13px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      max-width: 460px;
+      font-weight: 300;
+    }
+    .proj-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--fg-muted);
+      padding: 8px 0;
+      white-space: nowrap;
+      transition: color 0.2s;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .project-row:hover .proj-link { color: var(--accent); }
+    .proj-link svg { width: 11px; height: 11px; transition: transform 0.2s; }
+    .project-row:hover .proj-link svg { transform: translate(2px,-2px); }
+
+    /* ── Contact ─── */
+    #contact { padding-bottom: 120px; }
+    .contact-heading {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(30px, 5vw, 44px);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .contact-sub {
+      font-size: 15px;
+      color: var(--fg-muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+      max-width: 380px;
+      line-height: 1.65;
+    }
+    .contact-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+      padding: 9px 18px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover {
+      color: var(--fg);
+      border-color: var(--fg-muted);
+      background: var(--accent-light);
+    }
+    .contact-link.primary {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+    .contact-link.primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* ── Footer ─── */
+    footer {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 40px) 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--fg-muted);
+      letter-spacing: 0.05em;
+    }
+    .footer-copy span {
+      color: var(--accent);
+    }
+
+    /* ── Scroll reveal ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── Spotlight ─── */
+    #spotlight {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1s;
+      background: radial-gradient(700px circle at var(--x,50%) var(--y,50%),
+        rgba(232,168,56,0.05) 0%, transparent 65%);
+    }
+    [data-theme="dark"] #spotlight { opacity: 1; }
+    main, footer { position: relative; z-index: 1; }
+
+    /* ── Responsive ─── */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .project-row::before { left: -16px; right: -16px; }
+      .hero-title { font-size: 36px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      .hero-tag, .hero-title, .hero-sub, .hero-ctas { opacity: 1; animation: none; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="fixed top-0 w-full z-50 glass">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+<div id="spotlight" aria-hidden="true"></div>
 
-      <h1 class="text-xl font-bold tracking-tight">
-        Abban<span class="text-blue-400">.</span>
-      </h1>
+<nav>
+  <a href="#hero" class="nav-logo">abban<span>.ali</span></a>
+  <div class="nav-right">
+    <ul class="nav-links" role="list">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button id="theme-btn" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
 
-      <div class="hidden md:flex gap-8 text-sm text-gray-300">
-        <a href="#about" class="hover:text-white transition">About</a>
-        <a href="#projects" class="hover:text-white transition">Projects</a>
-        <a href="#skills" class="hover:text-white transition">Skills</a>
-        <a href="#contact" class="hover:text-white transition">Contact</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="min-h-screen flex items-center">
-    <div class="max-w-7xl mx-auto w-full">
-
-      <div class="max-w-3xl">
-
-        <p class="text-blue-400 mb-4 hero-small">
-          Frontend Developer • Python • GSAP
-        </p>
-
-        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight hero-title">
-          Building clean,
-          modern digital
-          experiences.
-        </h1>
-
-        <p class="text-gray-400 text-lg mt-8 leading-relaxed hero-text">
-          I create responsive websites, smooth interfaces,
-          and modern tools with a focus on performance,
-          simplicity, and design.
-        </p>
-
-        <div class="flex flex-wrap gap-4 mt-10 hero-buttons">
-
-          <a href="#projects"
-            class="btn-primary px-7 py-4 rounded-2xl font-semibold">
-            View Projects
-          </a>
-
-          <a href="https://github.com/AbbanAli"
-            target="_blank"
-            class="btn-secondary px-7 py-4 rounded-2xl font-semibold">
-            GitHub
-          </a>
-
-        </div>
-
-      </div>
-
+<main>
+  <!-- Hero -->
+  <section id="hero">
+    <p class="hero-tag">available for work</p>
+    <h1 class="hero-title" id="hero-title" aria-label="I break things. Then I make them better.">
+      <span id="typed-text"></span><span class="cursor" aria-hidden="true"></span>
+    </h1>
+    <p class="hero-sub">
+      Python, HTML, CSS, JavaScript still learning, always building.
+      The goal isn't perfection, it's shipping something real.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">
+        See my work
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 6h10M6 1l5 5-5 5"/></svg>
+      </a>
+      <a href="mailto:Muhammad.abban.ali.rashed@gmail.com" class="btn-ghost">Get in touch</a>
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <div class="section-rule" aria-hidden="true"></div>
+
+  <!-- About -->
   <section id="about">
-
-    <div class="max-w-6xl mx-auto">
-
-      <div class="mb-16">
-        <p class="text-blue-400 font-semibold mb-3">
-          About
-        </p>
-
-        <h2 class="text-4xl md:text-5xl font-bold">
-          Developer focused on
-          <span class="gradient-text">
-            clean UI & smooth UX
-          </span>
-        </h2>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-
-        <div class="glass rounded-3xl p-8 card about-card">
-          <h3 class="text-2xl font-semibold mb-5">
-            Who I Am
-          </h3>
-
-          <p class="text-gray-400 leading-relaxed">
-            I'm Abban, a developer passionate about
-            building modern websites and useful tools.
-            I enjoy creating polished interfaces,
-            smooth animations with GSAP, and projects
-            that actually feel good to use.
-          </p>
-        </div>
-
-        <div class="glass rounded-3xl p-8 card about-card">
-          <h3 class="text-2xl font-semibold mb-5">
-            Technologies
-          </h3>
-
-          <div class="flex flex-wrap gap-3">
-
-            <span class="px-4 py-2 rounded-xl bg-blue-500/10 text-blue-300">
-              HTML
-            </span>
-
-            <span class="px-4 py-2 rounded-xl bg-blue-500/10 text-blue-300">
-              CSS
-            </span>
-
-            <span class="px-4 py-2 rounded-xl bg-blue-500/10 text-blue-300">
-              JavaScript
-            </span>
-
-            <span class="px-4 py-2 rounded-xl bg-blue-500/10 text-blue-300">
-              GSAP
-            </span>
-
-            <span class="px-4 py-2 rounded-xl bg-blue-500/10 text-blue-300">
-              Python
-            </span>
-
-            <span class="px-4 py-2 rounded-xl bg-blue-500/10 text-blue-300">
-              Tailwind
-            </span>
-
-          </div>
-        </div>
-
-      </div>
-
+    <p class="section-eyebrow reveal">About</p>
+    <p class="about-text reveal">
+      I got into coding because I wanted to <b>actually make stuff</b>, not just read about it.
+      It started with curiosity about how websites worked. Now I build my own.
+      I like things simple, functional, and honest.
+    </p>
+    <div class="stack-row reveal" role="list" aria-label="Tech stack">
+      <span class="stack-pill">Python</span>
+      <span class="stack-pill" role="listitem">HTML5</span>
+      <span class="stack-pill" role="listitem">CSS3</span>
+      <span class="stack-pill" role="listitem">JavaScript</span>
     </div>
   </section>
 
-  <!-- PROJECTS -->
+  <div class="section-rule" aria-hidden="true"></div>
+
+  <!-- Projects -->
   <section id="projects">
+    <p class="section-eyebrow reveal">Projects</p>
+    <ul class="projects-list reveal" role="list">
 
-    <div class="max-w-7xl mx-auto">
-
-      <div class="mb-16">
-        <p class="text-blue-400 font-semibold mb-3">
-          Projects
-        </p>
-
-        <h2 class="text-4xl md:text-5xl font-bold">
-          Featured Work
-        </h2>
-      </div>
-
-      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-
-        <!-- CARD -->
-        <div class="glass rounded-3xl p-8 card project-card">
-
-          <div class="text-5xl mb-6">
-            🎬
-          </div>
-
-          <h3 class="text-2xl font-semibold mb-4">
-            YouTube Downloader
-          </h3>
-
-          <p class="text-gray-400 leading-relaxed mb-6">
-            A modern YouTube downloader with support
-            for MP3 and MP4 downloads, quality selection,
-            and a clean desktop UI.
-          </p>
-
-          <div class="flex flex-wrap gap-2 mb-8">
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              Python
-            </span>
-
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              tkinter
-            </span>
-
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              yt-dlp
-            </span>
-          </div>
-
-          <a
-            href="https://github.com/AbbanAli"
-            target="_blank"
-            class="text-blue-400 font-semibold"
-          >
-            View Project →
-          </a>
-
+      <li class="project-row">
+        <div>
+          <p class="proj-number">01</p>
+          <p class="proj-name">Madicare Pro</p>
+          <p class="proj-desc">a <strong>(fake)</strong> Hospital website i built</p>
         </div>
+        <a href="https://abbanali.github.io/madicare-pro/" target="_blank" rel="noopener" class="proj-link" aria-label="Open Madicare Pro">
+          launch
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 11L11 1M11 1H4M11 1v7"/></svg>
+        </a>
+      </li>
 
-        <!-- CARD -->
-        <div class="glass rounded-3xl p-8 card project-card">
-
-          <div class="text-5xl mb-6">
-            📁
-          </div>
-
-          <h3 class="text-2xl font-semibold mb-4">
-            File Organizer
-          </h3>
-
-          <p class="text-gray-400 leading-relaxed mb-6">
-            Automatically organizes files by type
-            with undo support and smart folder sorting.
-          </p>
-
-          <div class="flex flex-wrap gap-2 mb-8">
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              Python
-            </span>
-
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              Automation
-            </span>
-          </div>
-
-          <a
-            href="https://github.com/AbbanAli"
-            target="_blank"
-            class="text-blue-400 font-semibold"
-          >
-            View Project →
-          </a>
-
+      <li class="project-row">
+        <div>
+          <p class="proj-number">02</p>
+          <p class="proj-name">Gradient Shower</p>
+          <p class="proj-desc">Pick colors, get CSS. Built because I kept doing it manually and got tired of it.</p>
         </div>
+        <a href="https://abbanali.github.io/gradient-shower/" target="_blank" rel="noopener" class="proj-link" aria-label="Open Gradient Shower">
+          launch
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 11L11 1M11 1H4M11 1v7"/></svg>
+        </a>
+      </li>
 
-        <!-- CARD -->
-        <div class="glass rounded-3xl p-8 card project-card">
-
-          <div class="text-5xl mb-6">
-            🌐
-          </div>
-
-          <h3 class="text-2xl font-semibold mb-4">
-            Portfolio Website
-          </h3>
-
-          <p class="text-gray-400 leading-relaxed mb-6">
-            Responsive portfolio website focused
-            on smooth animations and modern UI design.
-          </p>
-
-          <div class="flex flex-wrap gap-2 mb-8">
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              HTML
-            </span>
-
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              GSAP
-            </span>
-
-            <span class="text-sm px-3 py-1 rounded-lg bg-white/5">
-              Tailwind
-            </span>
-          </div>
-
-          <a
-            href="https://github.com/AbbanAli"
-            target="_blank"
-            class="text-blue-400 font-semibold"
-          >
-            View Project →
-          </a>
-
+      <li class="project-row">
+        <div>
+          <p class="proj-number">03</p>
+          <p class="proj-name">YouTube Downloader</p>
+          <p class="proj-desc">Python script for downloading video. idk why its stuck at 320p</p>
         </div>
+        <a href="https://github.com/AbbanAli/youtube-downloader" target="_blank" rel="noopener" class="proj-link" aria-label="YouTube Downloader on GitHub">
+          source
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 11L11 1M11 1H4M11 1v7"/></svg>
+        </a>
+      </li>
 
-      </div>
+      <li class="project-row">
+        <div>
+          <p class="proj-number">04</p>
+          <p class="proj-name">File Organizer</p>
+          <p class="proj-desc">Automation script that sorts cluttered directories by file extension.</p>
+        </div>
+        <a href="https://github.com/AbbanAli/file-organizer" target="_blank" rel="noopener" class="proj-link" aria-label="File Organizer on GitHub">
+          source
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 11L11 1M11 1H4M11 1v7"/></svg>
+        </a>
+      </li>
 
-    </div>
+      <li class="project-row">
+        <div>
+          <p class="proj-number">05</p>
+          <p class="proj-name">LifeFlow</p>
+          <p class="proj-desc">Educational web platform spreading awareness about blood donation. Makes something important feel approachable.</p>
+        </div>
+        <a href="https://lifeflow-blood.github.io/LifeFlow.github.io/" target="_blank" rel="noopener" class="proj-link" aria-label="Open LifeFlow">
+          launch
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 11L11 1M11 1H4M11 1v7"/></svg>
+        </a>
+      </li>
+
+      <li class="project-row">
+        <div>
+          <p class="proj-number">06</p>
+          <p class="proj-name">First Website</p>
+          <p class="proj-desc">The sandbox where it all started. Preserved exactly as it was on day one</p>
+        </div>
+        <a href="https://abbanali.github.io" target="_blank" rel="noopener" class="proj-link" aria-label="Open first website">
+          launch
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 11L11 1M11 1H4M11 1v7"/></svg>
+        </a>
+      </li>
+
+    </ul>
   </section>
 
-  <!-- SKILLS -->
-  <section id="skills">
+  <div class="section-rule" aria-hidden="true"></div>
 
-    <div class="max-w-5xl mx-auto">
-
-      <div class="mb-16">
-        <p class="text-blue-400 font-semibold mb-3">
-          Skills
-        </p>
-
-        <h2 class="text-4xl md:text-5xl font-bold">
-          Tech Stack
-        </h2>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-
-        <div class="glass rounded-3xl p-8 card skill-card">
-
-          <div class="flex justify-between mb-3">
-            <span>Python</span>
-            <span>85%</span>
-          </div>
-
-          <div class="skill-bar">
-            <div class="skill-progress w-[85%]"></div>
-          </div>
-
-          <div class="flex justify-between mt-8 mb-3">
-            <span>JavaScript</span>
-            <span>70%</span>
-          </div>
-
-          <div class="skill-bar">
-            <div class="skill-progress w-[70%]"></div>
-          </div>
-
-          <div class="flex justify-between mt-8 mb-3">
-            <span>HTML/CSS</span>
-            <span>90%</span>
-          </div>
-
-          <div class="skill-bar">
-            <div class="skill-progress w-[90%]"></div>
-          </div>
-
-        </div>
-
-        <div class="glass rounded-3xl p-8 card skill-card">
-
-          <div class="flex justify-between mb-3">
-            <span>GSAP</span>
-            <span>75%</span>
-          </div>
-
-          <div class="skill-bar">
-            <div class="skill-progress w-[75%]"></div>
-          </div>
-
-          <div class="flex justify-between mt-8 mb-3">
-            <span>Tailwind CSS</span>
-            <span>80%</span>
-          </div>
-
-          <div class="skill-bar">
-            <div class="skill-progress w-[80%]"></div>
-          </div>
-
-          <div class="flex justify-between mt-8 mb-3">
-            <span>Git/GitHub</span>
-            <span>65%</span>
-          </div>
-
-          <div class="skill-bar">
-            <div class="skill-progress w-[65%]"></div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CONTACT -->
+  <!-- Contact -->
   <section id="contact">
-
-    <div class="max-w-4xl mx-auto text-center">
-
-      <p class="text-blue-400 font-semibold mb-3">
-        Contact
-      </p>
-
-      <h2 class="text-5xl font-bold mb-8">
-        Let's build something great.
-      </h2>
-
-      <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
-        Open to collaborations, freelance work,
-        and cool project ideas.
-      </p>
-
-      <div class="flex flex-wrap justify-center gap-5">
-
-        <a
-          href="mailto:abban.ali@outlook.com"
-          class="btn-primary px-7 py-4 rounded-2xl font-semibold"
-        >
-          Email Me
-        </a>
-
-        <a
-          href="https://github.com/AbbanAli"
-          target="_blank"
-          class="btn-secondary px-7 py-4 rounded-2xl font-semibold"
-        >
-          GitHub
-        </a>
-
-      </div>
-
+    <p class="section-eyebrow reveal">Contact</p>
+    <h2 class="contact-heading reveal">Let's build something.</h2>
+    <p class="contact-sub reveal">Got an idea, want to collaborate, or just want to say hi</p>
+    <div class="contact-links reveal">
+      <a href="mailto:Muhammad.abban.ali.rashed@gmail.com" class="contact-link primary">Email me</a>
+      <a href="https://github.com/AbbanAli" target="_blank" rel="noopener" class="contact-link">GitHub</a>
+      <a href="https://xdaforums.com/m/abban-ali.13411166/" target="_blank" rel="noopener" class="contact-link">XDA</a>
     </div>
-
   </section>
+</main>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-white/5 py-10 text-center text-gray-500 text-sm">
-    © 2026 Abban Ali. Built with HTML, Tailwind & GSAP.
-  </footer>
+<footer>
+  <span class="footer-copy" id="footer-copy">i was bored so i made this</span>
+</footer>
 
-  <script>
-    gsap.registerPlugin(ScrollTrigger);
+<script>
+  // ── Theme ──
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('theme-btn');
+  const footerCopy = document.getElementById('footer-copy');
 
-    gsap.from(".hero-small", {
-      y: 20,
-      opacity: 0,
-      duration: 0.8
+  function setTheme(t) {
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    footerCopy.innerHTML = t === 'light'
+      ? 'light mode, really?'
+      : 'i was bored so i made this';
+  }
+
+  const saved = localStorage.getItem('theme');
+  const sys   = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  setTheme(saved || sys);
+
+  themeBtn.addEventListener('click', () => {
+    setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  // ── Typewriter ──
+
+  const quote = `"I break things,\nThen I make them better. "`;
+  const author = " - me";
+
+  const target = document.getElementById("typed-text");
+
+  let i = 0;
+
+  function type() {
+    if (i <= quote.length) {
+      target.innerHTML = quote.slice(0, i).replace("\n", "<br>");
+      i++;
+      setTimeout(type, i === 1 ? 300 : 45 + Math.random() * 20);
+    } else {
+      const span = document.createElement("span");
+      span.className = "author";
+      span.textContent = author;
+      target.appendChild(span);
+    }
+  }
+
+  setTimeout(type, 600);
+
+  // ── Spotlight ──
+  const spotlight = document.getElementById('spotlight');
+  document.addEventListener('mousemove', e => {
+    spotlight.style.setProperty('--x', e.clientX + 'px');
+    spotlight.style.setProperty('--y', e.clientY + 'px');
+  });
+
+  // ── Scroll Reveal ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((entry, idx) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = (idx % 3) * 80 + 'ms';
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
     });
+  }, { threshold: 0.05 });
 
-    gsap.from(".hero-title", {
-      y: 40,
-      opacity: 0,
-      duration: 1,
-      delay: 0.2
-    });
-
-    gsap.from(".hero-text", {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      delay: 0.4
-    });
-
-    gsap.from(".hero-buttons", {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      delay: 0.6
-    });
-
-    gsap.from(".about-card", {
-      scrollTrigger: {
-        trigger: "#about",
-        start: "top 75%",
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out"
-    });
-
-    gsap.from(".project-card", {
-      scrollTrigger: {
-        trigger: "#projects",
-        start: "top 75%",
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out"
-    });
-
-    gsap.from(".skill-card", {
-      scrollTrigger: {
-        trigger: "#skills",
-        start: "top 75%",
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out"
-    });
-  </script>
-
+  revealEls.forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
